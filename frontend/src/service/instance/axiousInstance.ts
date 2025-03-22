@@ -1,4 +1,4 @@
-  import axios from "axios";
+  import axios, { AxiosError } from "axios";
 
   // Get the API URL from environment
   const API_URL = import.meta.env.VITE_API_URL;
@@ -70,23 +70,31 @@
   );
 
   async function getNewAccessToken() {
-    try {
-      const response = await axios.get(
-        `${normalizeBaseURL(API_URL)}/api/auth/refresh-token`,
-        { withCredentials: true }
-      );
-
-      console.log('Refresh Token Response:', response.data); // Add detailed logging
-      
-      if (!response.data?.data?.accessToken) {
-        throw new Error("No access token received from refresh token endpoint");
-      }
-
-      return response.data.data.accessToken;
-    } catch (error) {
-      console.error(error instanceof Error ? error.message : "Unknown error");
-      throw new Error(
-        `Invalid API_URL: ${URL}. URL must include protocol (e.g., http:// or https://)`
-      );
+  try {
+    // Log the API URL to debug
+    console.log('Attempting to refresh token at:', `${normalizeBaseURL(API_URL)}/api/auth/refresh-token`);
+    
+    const response = await axios.get(
+      `${normalizeBaseURL(API_URL)}/api/auth/refresh-token`,
+      { withCredentials: true }
+    );
+    
+    console.log('Refresh Token Response:', response.data);
+    
+    if (!response.data?.data?.accessToken) {
+      throw new Error("No access token received from refresh token endpoint");
     }
+
+    return response.data.data.accessToken;
+  } catch (error: unknown) {
+  const err = error as AxiosError;  // 👈 Type assertion
+
+  console.error("Token refresh error:", err);
+
+  if (err.response) {
+    console.error("Server responded with:", err.response.status, err.response.data);
   }
+
+  throw new Error(`Failed to refresh token. Please check API_URL: ${API_URL}`);
+}
+}
