@@ -1,8 +1,6 @@
-
+import { axiosInstance } from './instance/axiousInstance'
 import { AddTaskParams } from '../hooks/useAddTask';
 import { ITask } from '../types/task.types';
-
-import axiosInstance from './instance/axiousInstance';
 
 const api = axiosInstance;
 

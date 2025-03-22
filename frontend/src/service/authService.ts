@@ -1,5 +1,5 @@
 import { LoginCredentials, OtpVerification, RegisterCredentials } from '../types/auth';
-import axiosInstance from './instance/axiousInstance';
+import { axiosInstance } from './instance/axiousInstance'
 
 const api = axiosInstance;
 
@@ -28,30 +28,8 @@ export const verifyOtp = async  ({ email, otp }: OtpVerification) => {
   return data;
 };
 
-let refreshAttempted = false;
-
-export const refreshAccessToken = async (): Promise<string | null> => {
-    if (refreshAttempted) {
-      logoutUser();
-      return null;
-    }
-  try {
-    const { data } = await axiosInstance.post("/api/auth/refresh-token");
-    localStorage.setItem("accessToken", data.accessToken);
-
-    refreshAttempted = false;
-    return data.accessToken;
-  } catch (error) {
-    console.error("Failed to refresh token:", error);
-    refreshAttempted = true; 
-    return null;
-  }
-};
-
 export const logoutUser = async () => {
-  console.log('runnig logout........................')
   const { data } = await api.post('/api/auth/logout');
-  console.log('this is the data::::::::::::',data)
   return data;
 };
 
