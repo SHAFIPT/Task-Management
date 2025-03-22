@@ -10,7 +10,7 @@ const initializeSocket = (app: Express) => {
   server = http.createServer(app);
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: ['https://your-vercel-app-url.vercel.app' ,'http://localhost:5173'],
       methods: ["GET", "POST"],
       credentials: true
     },

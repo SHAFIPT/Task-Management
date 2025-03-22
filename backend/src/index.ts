@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000;
 
 // Configure CORS for Express
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['https://your-vercel-app-url.vercel.app' ,'http://localhost:5173'],
     credentials: true         
 }));
 
