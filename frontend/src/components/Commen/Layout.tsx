@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { ChevronRight, Menu, Home, Briefcase, Users, CheckSquare, Clock, Repeat } from 'lucide-react';
 import Navbar from '../Commen/NavBaar';
 import SidebarItem from '../Home/SideBar';
+interface LayoutProps {
+  children: ReactNode;
+}
 
-const Layout = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 

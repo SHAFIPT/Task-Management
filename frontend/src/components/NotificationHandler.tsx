@@ -15,13 +15,28 @@ const NotificationHandler = () => {
     if (lastNotification) {
       switch (lastNotification.type) {
         case 'project':
-          toast.success(`New project added: ${lastNotification.data.name}`);
+          // Access project name through the correct nested structure
+          if (lastNotification.data.kind === 'project') {
+            toast.success(`New project added: ${lastNotification.data.project.name}`);
+          }
           break;
         case 'task':
-          toast.info(`New task added: ${lastNotification.data.title}`);
+          // Access task title through the correct nested structure
+          if (lastNotification.data.kind === 'task') {
+            toast.info(`New task added: ${lastNotification.data.task.title}`);
+          }
           break;
         case 'update':
-          toast.info(`Task updated: ${lastNotification.data.title}`);
+          // For updates, check what type of update it is
+          if (lastNotification.data.kind === 'update') {
+            const update = lastNotification.data.update;
+            // Type guard to determine if it's a Task or Project
+            if ('title' in update) {
+              toast.info(`Task updated: ${update.title}`);
+            } else if ('name' in update) {
+              toast.info(`Project updated: ${update.name}`);
+            }
+          }
           break;
         default:
           break;
