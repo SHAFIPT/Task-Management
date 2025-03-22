@@ -42,6 +42,8 @@ export const decodedUserRefreshToken = (
   res: Response,
   next: NextFunction
 ): void => {
+  console.log('Thsi si ethe logoutdata 1',req.cookies)
+  console.log('Thsi si ethe logoutdata 2',req.header)
   const refreshToken = req.cookies?.refreshToken || req.header("refreshToken");
 
 
@@ -54,6 +56,7 @@ export const decodedUserRefreshToken = (
   try {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as jwt.JwtPayload;
     
+     console.log("✅ Decoded Refresh Token:", decoded);
     // Cast req to AuthenticatedRequest
     (req as AuthenticatedRequest).user = { 
       ...decoded, 
