@@ -1,6 +1,6 @@
 
 import { IProject } from '../types/task.types';
-import { axiosInstance } from './instance/axiousInstance'
+import axiosInstance from './instance/axiousInstance';
 
 const api = axiosInstance;
 

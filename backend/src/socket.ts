@@ -11,7 +11,7 @@ const initializeSocket = (app: Express) => {
   io = new Server(server, {
     cors: {
         origin: [
-          'https://task-management-six-lilac.vercel.app',
+          'https://task-management-six-lilac.vercel.app/',
           'https://task-management-6s3v0wk7y-shafis-projects-0d77721d.vercel.app', 
           'https://task-management-six-lilac.vercel.app',
           'http://localhost:5173'

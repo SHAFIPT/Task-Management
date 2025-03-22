@@ -1,6 +1,7 @@
 import * as Joi from "joi";
 import { IProject } from "../types/task.types";
 
+
 const projectSchema = Joi.object({
   name: Joi.string().min(3).max(50).required().messages({
     "string.empty": "Project name is required",
@@ -10,7 +11,7 @@ const projectSchema = Joi.object({
   description: Joi.string().max(300).allow("").messages({
     "string.max": "Description cannot exceed 300 characters",
   })
-});
+}).unknown(true);
 
 export const validateProject = (data:IProject ) => {
   const { error } = projectSchema.validate(data, { abortEarly: false });

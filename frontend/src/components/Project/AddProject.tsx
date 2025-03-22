@@ -102,6 +102,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({ onClose, currentUserI
     };
 
     const errors = validateProject(newProject);
+    console.log('This are teh errros :::',errors)
     if (errors) {
       setFormErrors(errors);
       return;
