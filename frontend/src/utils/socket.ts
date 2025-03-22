@@ -1,8 +1,14 @@
 // src/utils/socket.ts
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
-  withCredentials: true, // Make sure this matches your backend CORS config
+// Get the Socket.io URL from environment variables
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL;
+
+// Log which URL we're using for debugging
+console.log("Connecting to socket server at:", SOCKET_URL);
+
+const socket = io(SOCKET_URL, {
+  withCredentials: true,
   autoConnect: true,
 });
 
