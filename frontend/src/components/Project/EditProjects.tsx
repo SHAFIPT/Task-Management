@@ -4,6 +4,7 @@ import useEditProject from "../../hooks/useEditProject";
 import { toast } from "react-toastify";
 import { FiX, FiPlus } from 'react-icons/fi';
 import useUser from '../../hooks/useUser';
+import { validateProject } from "../../validator/projectValidate";
 
 // Updated interface for member structure
 export interface IMember {
@@ -56,6 +57,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
   // Fetch users data
   const { data, isLoading: isLoadingUsers } = useUser();
   const { mutate: editProject, isPending: isLoading } = useEditProject();
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   
   // Extract users array from the response
@@ -127,6 +129,14 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
       }),
     };
 
+    const errors = validateProject(updatedProject);
+        if (errors) {
+          setFormErrors(errors);
+          return;
+    }
+    
+    setFormErrors({});
+
     editProject(
       { projectId: project._id, updatedData: updatedProject },
       {
@@ -170,6 +180,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
             />
+             {formErrors.name && <p className="text-xs text-red-500 mt-1">{formErrors.name}</p>}
           </div>
 
           <div className="mb-4">
@@ -179,6 +190,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
               onChange={(e) => setProjectDescription(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 h-24 resize-none"
             />
+             {formErrors.description && <p className="text-xs text-red-500 mt-1">{formErrors.description}</p>}
           </div>
 
           <div className="mb-4">
@@ -210,6 +222,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
                   Add Member
                 </button>
               )}
+              {formErrors.members && <p className="text-xs text-red-500 mt-1">{formErrors.members}</p>}
             </div>
 
             {/* List of current members */}

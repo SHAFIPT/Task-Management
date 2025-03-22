@@ -86,7 +86,7 @@
     } catch (error) {
       console.error(error instanceof Error ? error.message : "Unknown error");
       throw new Error(
-        `Invalid API_URL: ${URL}. URL must include protocol (e.g., http:// or https://)`
+        `Invalid API_URL: ${API_URL}. URL must include protocol (e.g., http:// or https://)`
       );
     }
   }

@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import '../../pages/Auth/loadingBody.css'
 import { toast } from 'react-toastify';
+import { validateTask } from '../../validator/validateTask';
 
 interface ProjectMember {
   _id: string;
@@ -47,6 +48,7 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   const userId = user?._id;
   
@@ -151,6 +153,15 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
         tags: formData.tags || [],
         createdBy: userId || ''
       };
+
+      const errors = validateTask(newTask);
+      if (errors) {
+        setFormErrors(errors);
+        return;
+      }
+      
+      // Clear errors if validation passes
+      setFormErrors({});
       
       // Using the mutation with onSuccess callback
       addTaskMutation.mutate(newTask, {
@@ -210,6 +221,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                 required
                 placeholder="Enter task title"
               />
+               {formErrors.title && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.title}</p>
+              )}
             </div>
 
             {/* Description */}
@@ -223,6 +237,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                 rows={3}
                 placeholder="Enter task description"
               />
+              {formErrors.description && (
+              <p className="mt-1 text-xs text-red-500">{formErrors.description}</p>
+            )}
             </div>
 
             {/* Project */}
@@ -249,6 +266,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                   </svg>
                 </div>
               </div>
+              {formErrors.project && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.project}</p>
+              )}
             </div>
 
             {/* Assigned To */}
@@ -269,6 +289,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                 ))}
               </select>
               <p className="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple members</p>
+              {formErrors.assignedTo && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.assignedTo}</p>
+              )}
             </div>
 
             {/* Status & Priority */}
@@ -294,6 +317,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                     </svg>
                   </div>
                 </div>
+                {formErrors.status && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.status}</p>
+              )}
               </div>
 
               <div>
@@ -317,6 +343,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                   </div>
                 </div>
               </div>
+              {formErrors.priority && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.priority}</p>
+              )}
             </div>
 
             {/* Due Date & Time Estimate */}
@@ -335,6 +364,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                   placeholder="0.0"
                 />
               </div>
+              {formErrors.timeEstimate && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.timeEstimate}</p>
+              )}
             </div>
 
             {/* Tags */}
@@ -355,6 +387,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                 >
                   Add
                 </button>
+                {formErrors.tags && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.tags}</p>
+              )}
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {formData.tags?.map((tag) => (
@@ -372,6 +407,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onClose }) => {
                     </button>
                   </span>
                 ))}
+                {formErrors.createdBy && (
+                <p className="mt-1 text-xs text-red-500">{formErrors.createdBy}</p>
+              )}
               </div>
             </div>
           </div>

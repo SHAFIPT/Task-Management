@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {  IProject, ITask } from '../../types/task.types';
 import useEditTask from '../../hooks/useEditTask';
 import useProjects from '../../hooks/useProject';
+import { validateEditTask } from '../../validator/validateEdit';
 
 interface ProjectMember {
   _id: string;
@@ -40,6 +41,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
 
   const [tagInput, setTagInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   // Fetch projects
   const {
@@ -147,6 +149,17 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
       tags: formData.tags,
       dueDate: formData.dueDate,
     };
+    
+
+    const errors = validateEditTask(updatedData);
+      if (errors) {
+        setFormErrors(errors);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Clear errors if validation passes
+      setFormErrors({});
 
       // Using the mutation with onSuccess callback
       editTaskMutation.mutate(
@@ -250,6 +263,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                     required
                     placeholder="Enter task title"
                   />
+                  {formErrors.title && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.title}</p>
+                  )}
                 </div>
 
                 {/* Description */}
@@ -263,6 +279,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                     rows={3}
                     placeholder="Enter task description"
                   />
+                  {formErrors.description && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.description}</p>
+                  )}
                 </div>
 
                 {/* Project */}
@@ -300,6 +319,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                       </svg>
                     </div>
                   </div>
+                   {formErrors.project && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.project}</p>
+                  )}
                 </div>
 
                 {/* Assigned To */}
@@ -320,6 +342,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                     ))}
                   </select>
                   <p className="text-xs text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple members</p>
+                  {formErrors.assignedTo && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.assignedTo}</p>
+                  )}
                 </div>
 
                 {/* Status & Priority */}
@@ -356,6 +381,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                         </svg>
                       </div>
                     </div>
+                    {formErrors.status  && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.status }</p>
+                  )}
                   </div>
 
                   <div>
@@ -390,6 +418,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                       </div>
                     </div>
                   </div>
+                  {formErrors.priority   && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.priority  }</p>
+                  )}
                 </div>
 
                 {/* Due Date & Time Estimate */}
@@ -413,6 +444,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                       </div>
                     </div>
                   </div>
+                  {formErrors.timeEstimate    && (
+                    <p className="mt-1 text-xs text-red-500">{formErrors.timeEstimate   }</p>
+                  )}
                 </div>
 
                 {/* Tags */}
@@ -433,6 +467,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, onClose }) => {
                           }
                         }}
                       />
+                      {formErrors.tags    && (
+                      <p className="mt-1 text-xs text-red-500">{formErrors.tags   }</p>
+                    )}
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                         <Tag size={18} />
                       </div>
