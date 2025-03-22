@@ -9,17 +9,7 @@ const projectSchema = Joi.object({
   }),
   description: Joi.string().max(300).allow("").messages({
     "string.max": "Description cannot exceed 300 characters",
-  }),
-  members: Joi.array()
-    .items(
-      Joi.object({
-        user: Joi.string().required(),
-        role: Joi.string().valid("editor", "viewer").required(),
-      })
-    )
-    .messages({
-      "array.includesRequiredUnknowns": "Each member must have a user and role",
-    }),
+  })
 });
 
 export const validateProject = (data:IProject ) => {

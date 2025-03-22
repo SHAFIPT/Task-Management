@@ -222,7 +222,6 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose })
                   Add Member
                 </button>
               )}
-              {formErrors.members && <p className="text-xs text-red-500 mt-1">{formErrors.members}</p>}
             </div>
 
             {/* List of current members */}

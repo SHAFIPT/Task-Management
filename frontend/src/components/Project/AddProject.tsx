@@ -201,7 +201,6 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({ onClose, currentUserI
                     )}
                   </div>
                 ))}
-                {formErrors.members && <p className="text-xs text-red-500 mt-1">{formErrors.members}</p>}
               </div>
 
               {/* Form to add new members */}
