@@ -55,7 +55,7 @@ export class authService implements IauthService {
 
       // Generate tokens
       const tokenPayload = {
-        id: user._id.toString(),
+        _id: user._id.toString(),
         role: user.role || role, // Use the role from user object if available, otherwise use the provided role
       };
 
@@ -242,7 +242,7 @@ export class authService implements IauthService {
             const payload = await this.tokenService.verifyRefreshToken(refreshToken)
 
             const tokenPayload = {
-                id: payload.id,
+                _id: payload._id,
                 role: payload.role
             };
 

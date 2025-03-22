@@ -26,7 +26,7 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
     const decoded = tokenService.verifyAccessToken(token);
 
     // Attach user ID to the request object
-    req.user = { id: decoded.id };
+    req.user = { id: decoded._id };
 
     next(); // Proceed to next middleware/controller
   } catch (error) {
@@ -85,7 +85,7 @@ export const verifyUserRefreshToken = (
     const decoded = tokenService.verifyRefreshToken(refreshToken);
 
     // ✅ Type assertion
-    (req as AuthenticatedRequest).user = { rawToken: refreshToken, id: decoded.id };
+    (req as AuthenticatedRequest).user = { rawToken: refreshToken, id: decoded._id };
 
     next();
   } catch (err) {

@@ -1,7 +1,7 @@
 // interface/ITokenService.ts
 
 export interface ITokenPayload {
-    id: string;
+    _id: string;
     role: string | null;
     // Add any other properties you want to include in the token
 }
