@@ -14,7 +14,7 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
   try {
     const tokenService = container.resolve<TokenService>(TokenService); // Resolve TokenService using tsyringe
 
-    // Get token from headers
+    // Get token from headers    
     const token = req.header("Authorization")?.split(" ")[1];
 
     if (!token) {
@@ -58,7 +58,7 @@ export const decodedUserRefreshToken = (
     (req as AuthenticatedRequest).user = { 
       ...decoded, 
       rawToken: refreshToken,
-      id: decoded.id // Make sure the decoded token has an id property
+      id: decoded._id // Make sure the decoded token has an id property
     };
 
     next();
