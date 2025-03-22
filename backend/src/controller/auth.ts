@@ -95,7 +95,7 @@ export class AuthController implements IAuthController {
                 success: true, 
                 message: ResponseMessages.REGISTRATION_SUCCESS,
                 user: {
-                    id: user.id,
+                    id: user._id,
                     name: user.name,
                     email: user.email
                 }   

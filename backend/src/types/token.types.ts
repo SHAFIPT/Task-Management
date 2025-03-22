@@ -1,4 +1,4 @@
 export interface ITokenPayload {
-    id: string;
+    _id: string;
     role: string;
 }

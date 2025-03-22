@@ -55,7 +55,7 @@ export class authService implements IauthService {
 
       // Generate tokens
       const tokenPayload = {
-        id: user.id,
+        id: user._id.toString(),
         role: user.role || role, // Use the role from user object if available, otherwise use the provided role
       };
 
