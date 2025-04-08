@@ -6,7 +6,11 @@ export interface IauthService{
         accessToken: string;
         refreshToken: string;
     }>
-    register(user : Partial<IUser>) : Promise<IUser>
+    register(user: Partial<IUser>): Promise<{
+    user: Omit<IUser, "password">;
+    accessToken: string;
+    refreshToken: string;
+    }>
     forgetPassword(email : string) : Promise<IUser>
     resetPassword(email: string, password: string, token: string): Promise<IUser>
     logout(token: string, id: string): Promise<IUser | null>;

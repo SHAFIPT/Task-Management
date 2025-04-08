@@ -91,57 +91,61 @@ export class authService implements IauthService {
       throw new AppError((error instanceof Error) ? error.message : "Login failed", 500);
     }
   }
-  async register(user: Partial<IUser>): Promise<IUser> {
-        try {
-            const { email, password, name } = user;
+  async register(user: Partial<IUser>): Promise<{
+  user: Omit<IUser, "password">;
+  accessToken: string;
+  refreshToken: string;
+}> {
+  try {
+    const { email, password, name } = user;
 
-            console.log('This are teh servies datas:::', {
-                email,
-                password,
-                name
-            })
-            
-            if (!email || !password || !name) {
-                throw new AppError(ResponseMessages.MISSING_FIELDS, HttpStatus.BAD_REQUEST);
-            }
-
-            const existingUser = await this.authRepo.findByUserEmail(email);
-
-            console.log('Thsi sit he existinguser ::::', {
-                existingUser
-            })
-            
-            if (existingUser) {
-                throw new AppError(ResponseMessages.USER_ALREADY_EXISTS, HttpStatus.CONFLICT);
-            }
-
-            // Hash the password
-            const hashedPassword = await hashPassword(password);
-
-
-            console.log('NOw i am addin teh user ::::')
-            
-            // Create user
-            const newUser = await this.authRepo.register({
-                ...user,
-                password: hashedPassword,
-                authType: user.authType || "local",
-            });
-
-            console.log('thsi is the new User :::',newUser)
-
-            // Send welcome email
-            // await this.emailService.sendWelcomeEmail(newUser.email, newUser.name);
-            
-            return newUser;
-            
-        } catch (error) {   
-            if (error instanceof AppError) {
-                throw error;
-            }
-            throw new AppError(ResponseMessages.REGISTRATION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    if (!email || !password || !name) {
+      throw new AppError(ResponseMessages.MISSING_FIELDS, HttpStatus.BAD_REQUEST);
     }
+
+    const existingUser = await this.authRepo.findByUserEmail(email);
+    if (existingUser) {
+      throw new AppError(ResponseMessages.USER_ALREADY_EXISTS, HttpStatus.CONFLICT);
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const newUser = await this.authRepo.register({
+      ...user,
+      password: hashedPassword,
+      authType: user.authType || "local",
+    });
+
+    // Create token payload
+    const tokenPayload = {
+      _id: newUser._id.toString(),
+      role: "user", // Default to user
+    };
+
+    const accessToken = this.tokenService.generateAccessToken(tokenPayload);
+    const refreshToken = this.tokenService.generateRefreshToken(tokenPayload);
+
+    // Save the refresh token
+    await this.authRepo.saveUserRefreshToken(newUser._id.toString(), refreshToken);
+
+    const {
+      password: _,
+      refreshToken: __,
+      ...userWithoutSensitive
+    } = newUser.toObject();
+
+    return {
+      user: userWithoutSensitive as IUser,
+      accessToken,
+      refreshToken,
+    };
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError(ResponseMessages.REGISTRATION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+}
   async forgetPassword(email: string): Promise<IUser> {
         try {
             if (!email) {

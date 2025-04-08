@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
- Home, Briefcase, Users, CheckSquare, Clock, 
-  Repeat, Bell, Menu, ChevronRight, 
+ Home, Briefcase, CheckSquare, Clock, 
+ Bell, Menu, ChevronRight, 
    ArrowRight, 
 } from 'lucide-react';
 import SidebarItem from './SideBar';
@@ -257,10 +257,10 @@ const UserHome: React.FC = () => {
           <nav>
             <SidebarItem icon={<Home size={20} />} text="Home" path="/" expanded={sidebarOpen} />
             <SidebarItem icon={<Briefcase size={20} />} text="Projects" path="/Project-list" expanded={sidebarOpen} />
-            <SidebarItem icon={<Users size={20} />} text="Collaborations" path="/collaborations" expanded={sidebarOpen} />
+            {/* <SidebarItem icon={<Users size={20} />} text="Collaborations" path="/collaborations" expanded={sidebarOpen} /> */}
             <SidebarItem icon={<CheckSquare size={20} />} text="Tasks" path="/task-list" expanded={sidebarOpen} />
-            <SidebarItem icon={<Clock size={20} />} text="Time Sheets" path="/timesheets" expanded={sidebarOpen} />
-            <SidebarItem icon={<Repeat size={20} />} text="Reset Projects" path="/reset-projects" expanded={sidebarOpen} />
+            {/* <SidebarItem icon={<Clock size={20} />} text="Time Sheets" path="/timesheets" expanded={sidebarOpen} /> */}
+            {/* <SidebarItem icon={<Repeat size={20} />} text="Reset Projects" path="/reset-projects" expanded={sidebarOpen} /> */}
           </nav>
         </div>
       </div>

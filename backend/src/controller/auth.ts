@@ -89,21 +89,22 @@ export class AuthController implements IAuthController {
      public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData = req.body;
-            const user = await this.authService.register(userData);
-            
-            res.status(HttpStatus.CREATED).json({ 
-                success: true, 
-                message: ResponseMessages.REGISTRATION_SUCCESS,
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email
-                }   
+            const result = await this.authService.register(userData);
+
+            // Set refresh token in HTTP-only cookie
+            res.cookie('refreshToken', result.refreshToken, this.REFRESH_TOKEN_COOKIE_OPTIONS);
+
+            res.status(HttpStatus.CREATED).json({
+            success: true,
+            message: ResponseMessages.REGISTRATION_SUCCESS,
+            user: result.user,
+            accessToken: result.accessToken,
             });
         } catch (error) {
             next(error);
         }
-    }
+        }
+
      public async forgetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { email } = req.body;

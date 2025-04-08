@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { ChevronRight, Menu, Home, Briefcase, Users, CheckSquare, Clock, Repeat } from 'lucide-react';
+import { ChevronRight, Menu, Home, Briefcase , CheckSquare } from 'lucide-react';
 import Navbar from '../Commen/NavBaar';
 import SidebarItem from '../Home/SideBar';
 interface LayoutProps {
@@ -37,10 +37,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <nav>
             <SidebarItem icon={<Home size={20} />} text="Home" path="/"  expanded={sidebarOpen} />
             <SidebarItem icon={<Briefcase size={20} />} text="Projects" path="/Project-list" expanded={sidebarOpen} />
-            <SidebarItem icon={<Users size={20} />} text="Collaborations" path="/collaborations" expanded={sidebarOpen} />
+            {/* <SidebarItem icon={<Users size={20} />} text="Collaborations" path="/collaborations" expanded={sidebarOpen} />/ */}
             <SidebarItem icon={<CheckSquare size={20} />} text="Tasks" path="/Task-list" expanded={sidebarOpen} />
-            <SidebarItem icon={<Clock size={20} />} text="Time Sheets" path="/timesheets" expanded={sidebarOpen} />
-            <SidebarItem icon={<Repeat size={20} />} text="Reset Projects" path="/reset-projects" expanded={sidebarOpen} />
+            {/* <SidebarItem icon={<Clock size={20} />} text="Time Sheets" path="/timesheets" expanded={sidebarOpen} /> */}
+            {/* <SidebarItem icon={<Repeat size={20} />} text="Reset Projects" path="/reset-projects" expanded={sidebarOpen} /> */}
           </nav>
         </div>
       </div>
