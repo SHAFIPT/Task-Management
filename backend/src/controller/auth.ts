@@ -90,7 +90,6 @@ export class AuthController implements IAuthController {
         try {
             const userData = req.body;
             const result = await this.authService.register(userData);
-
             // Set refresh token in HTTP-only cookie
             res.cookie('refreshToken', result.refreshToken, this.REFRESH_TOKEN_COOKIE_OPTIONS);
 
