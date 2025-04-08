@@ -65,6 +65,9 @@ const useAuth = () => {
     mutationFn: registerUser,
     onSuccess: (data) => {
       toast.success("OTP sent to your email");
+      console.log('Thsiis the data get in fronte ;::',data)
+      localStorage.setItem("accessToken", data.accessToken);
+      toast.success('User register successfully...');
       setAuthUser(data.user);
     },
     onError: (error: AxiosError<ErrorResponse>) => {
